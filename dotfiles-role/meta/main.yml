@@ -1,0 +1,12 @@
+galaxy_info:
+  author: jonavdm
+  description: A simple role to install my dotfiles
+  company: your company (optional)
+
+  license: MIT
+
+  min_ansible_version: 2.1
+
+  galaxy_tags: []
+
+dependencies: []

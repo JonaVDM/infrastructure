@@ -1,0 +1,15 @@
+---
+dotfiles_repo: https://github.com/JonaVDM/dotfiles.git
+dotfiles_folder: ~/.dotfiles
+
+dotfiles_files:
+  - src: .zshrc
+    dest: ~/.zshrc
+  - src: .p10k.zsh
+    dest: ~/.p10k.zsh
+  - src: .gitconfig
+    dest: ~/.gitconfig
+  - src: .tmux.conf
+    dest: ~/.tmux.conf
+  - src: kitty
+    dest: ~/.config/kitty

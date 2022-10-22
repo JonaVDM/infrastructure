@@ -1,0 +1,34 @@
+---
+- name: Make sure the .config folder exists
+  ansible.builtin.file:
+    path: ~/.config
+    state: directory
+    mode: "0755"
+
+- name: Clone dotfiles repo to the machine
+  ansible.builtin.git:
+    accept_hostkey: true
+    repo: "{{ dotfiles_repo }}"
+    dest: "{{ dotfiles_folder }}"
+
+- name: Check the current files
+  ansible.builtin.command: "ls -F {{ item.dest }}"
+  register: existing_dotfile_info
+  failed_when: false
+  check_mode: false
+  changed_when: false
+  with_items: "{{ dotfiles_files }}"
+
+- name: Remove current files in case it has not
+  ansible.builtin.file:
+    path: "{{ dotfiles_files[item.0].dest }}"
+    state: absent
+  when: "'@' not in item.1.stdout"
+  with_indexed_items: "{{ existing_dotfile_info.results }}"
+
+- name: Link dotfiles to the right place
+  ansible.builtin.file:
+    src: "{{ dotfiles_folder }}/{{ item.src }}"
+    dest: "{{ item.dest }}"
+    state: link
+  with_items: "{{ dotfiles_files }}"
