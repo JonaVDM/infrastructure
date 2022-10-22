@@ -15,7 +15,7 @@
 
     - ansible.builtin.import_tasks: 'tasks/packages.yml'
     - ansible.builtin.import_role:
-        name: jonavdm.dotfiles
+        name: ../dotfiles-role
     - import_tasks: 'tasks/tmux.yml'
     - import_tasks: 'tasks/nvim.yml'
     - import_tasks: 'tasks/shell.yml'
@@ -55,6 +55,7 @@
         state: started
         enabled: true
       when: enable_wake_on_lan
+    # TODO: Enable services
 
     # TODO: Get this working again
     # - include_role:

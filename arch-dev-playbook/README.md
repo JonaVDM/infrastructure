@@ -2,6 +2,12 @@
 
 A ansible playbook to setup a fresh arch based workstation.
 
+## Installing the requirements
+
+```bash
+ansible-galaxy install -r requirements.yml
+```
+
 ## Running the playbook
 
 In order to run this you need to change the `default.config.yml` to the values
