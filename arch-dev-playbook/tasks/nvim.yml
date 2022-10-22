@@ -1,9 +1,9 @@
 ---
 - name: Download nvim-config
   git:
-    repo: "{{ nvim_repo }}" 
+    repo: '{{ nvim_repo }}'
     dest: ~/.config/nvim
     update: true
-
-- name: Install vim plug packages
-  command: nvim --headless +PlugInstall +qa
+# TODO: Install plugins
+# TODO: Install LSP
+# TODO: Install TS languages

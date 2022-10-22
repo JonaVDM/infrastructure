@@ -1,11 +1,19 @@
 ---
-- name: Install the required packages
+- name: Install the required packages (Pacman)
   become: true
   community.general.pacman:
-    name: "{{ item }}"
+    name: '{{ item }}'
     state: latest
   with_items:
-    - "{{ sway_pac_packages }}"
+    - '{{ sway_pac_packages }}'
+
+- name: Install the required packages (AUR)
+  kewlfft.aur.aur:
+    name: rofi-power-menu
+    state: latest
+    use: yay
+  with_items:
+    - '{{ sway_aur_packages }}'
 
 - name: Temp clone the rofi-themes-collection repo
   ansible.builtin.git:
@@ -23,12 +31,6 @@
     dest: ~/.local/share/rofi/themes/
     remote_src: true
 
-- name: Install powermenu
-  kewlfft.aur.aur:
-    name: rofi-power-menu
-    state: latest
-    use: yay
-
 - name: Make electron work better with wayland
   ansible.builtin.copy:
     dest: ~/.config/electron-flags.conf
@@ -39,7 +41,34 @@
     - ~/.config/electron-flags.conf
     - ~/.config/electron16-flags.conf
 
+- name: Clone the sway config repo
+  ansible.builtin.git:
+    repo: https://github.com/JonaVDM/sway-config.git
+    dest: ~/.sway-config
+
 - name: Install autotiling
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/nwg-piotr/autotiling/master/autotiling/main.py
-    dest: ~/.dotfiles/sway/scripts/tiling.py
+    dest: ~/.sway-config/sway/scripts/tiling.py
+
+- name: Check the current sway config files
+  ansible.builtin.command: 'ls -F ~/.config/{{ item }}/'
+  register: existing_swayfiles_info
+  failed_when: false
+  check_mode: false
+  changed_when: false
+  with_items: '{{ sway_config_files }}'
+
+- name: Remove any old config files
+  ansible.builtin.file:
+    path: '~/.config/{{ sway_config_files[item.0] }}'
+    state: absent
+  when: "'@' not in item.1.stdout"
+  with_indexed_items: '{{ existing_swayfiles_info.results }}'
+
+- name: Link the files from the repo
+  ansible.builtin.file:
+    dest: '~/.config/{{ item }}'
+    src: '~/.sway-config/{{ item }}'
+    state: link
+  with_items: '{{ sway_config_files }}'

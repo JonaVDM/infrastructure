@@ -12,7 +12,6 @@ pacman_packages:
   - zsh
   - github-cli
   - fuse-overlayfs
-  - libreoffice-still
   - unzip
   - zip
   - htop
@@ -21,18 +20,14 @@ pacman_packages:
   - eslint_d
   - prettier
   - neovim
-  - kitty
   - ddcutil
 
 aur_packages:
   - gvm
-  # - nerd-fonts-hack
   - pyenv-virtualenv
   - wol-systemd
   - nvm
   - tmuxinator
-  - wl-clipboard-history-git
-    # - ncspot
 
 nvidia_driver: mesa
 
@@ -56,5 +51,12 @@ sway_pac_packages:
   - xorg-xwayland
   - libpulse
   - thunar
-  - alacritty
   - firefox
+  - kitty
+  - libreoffice-still
+
+sway_aur_packages:
+  # - nerd-fonts-hack
+  # - ncspot
+  - wl-clipboard-history-git
+  - rofi-power-menu

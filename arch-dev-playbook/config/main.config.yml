@@ -4,25 +4,21 @@ nvidia_gpu: false
 enable_wake_on_lan: false
 wol_interface: enp5s0
 
-enable_sway: false
+enable_sway: true
 
 shell: zsh
-ohmyzsh_path: ~/.oh-my-zsh
 
-nvm_version: "v0.39.1"
+nvm_version: 'v0.39.1'
 gvm_install_version: go1.18.2
-nvm_install_version: "18.2.0"
-pyenv_install_version: "3.10.4"
+nvm_install_version: '18.2.0'
+pyenv_install_version: '3.10.4'
 
-sway_dotfiles:
-  - src: sway
-    dest: ~/.config/sway
-  - src: waybar
-    dest: ~/.config/waybar
-  - src: mako
-    dest: ~/.config/mako
-  - src: rofi
-    dest: ~/.config/rofi
+sway_config_files:
+  - sway
+  - waybar
+  - mako
+  - rofi
+  - swaylock
 
 dotfiles_backgrounds:
   - src: ~/.dotfiles/pictures/nord-colors.png
