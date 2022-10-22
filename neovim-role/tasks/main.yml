@@ -1,2 +1,15 @@
 ---
-# tasks file for neovim-role
+# TODO: Check if there is already a config up front, and make a backup of that
+# whenever it is not the specified repo.
+
+- name: Clone the repository containing the neovim config
+  ansible.builtin.git:
+    repo: '{{ neovim_repository }}' 
+    dest: ~/.config/nvim 
+    clone: yes
+    update: yes
+
+- name: Install plugins via packer
+  command: nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+
+# TODO: install lsp
