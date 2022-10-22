@@ -17,7 +17,8 @@
     - ansible.builtin.import_role:
         name: ../dotfiles-role
     - import_tasks: 'tasks/tmux.yml'
-    - import_tasks: 'tasks/nvim.yml'
+    - import_role: 
+        name: ../neovim-role
     - import_tasks: 'tasks/shell.yml'
 
     - name: Make sure the Pictures folder exists

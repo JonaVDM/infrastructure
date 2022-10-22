@@ -1,9 +1,0 @@
----
-- name: Download nvim-config
-  git:
-    repo: '{{ nvim_repo }}'
-    dest: ~/.config/nvim
-    update: true
-# TODO: Install plugins
-# TODO: Install LSP
-# TODO: Install TS languages
