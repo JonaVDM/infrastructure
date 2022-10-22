@@ -1,0 +1,10 @@
+---
+roles:
+  - src: https://github.com/JonaVDM/dotfiles-role
+    name: jonavdm.dotfiles
+  - src: https://github.com/JonaVDM/version-manager-role
+    name: jonavdm.versions
+
+collections:
+  - name: community.general
+  - name: kewlfft.aur

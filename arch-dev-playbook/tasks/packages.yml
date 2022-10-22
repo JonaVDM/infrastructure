@@ -1,0 +1,42 @@
+---
+- name: Install the pacman packages
+  become: true
+  community.general.pacman:
+    name: "{{ item }}"
+    state: latest
+  with_items: "{{ pacman_packages }}"
+
+# Had some issues where yay/makepkg would timeout because it was asking for a
+# password. Creating a user that has the permission to run pacman without a
+# password seems to fix this. https://github.com/kewlfft/ansible-aur#usage
+- name: Create the aur_builder user
+  become: true
+  ansible.builtin.user:
+    name: aur_builder
+    create_home: yes
+    group: wheel
+
+- name: Allow the aur_builder user to run sudo pacman without a password
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers.d/11-install-aur_builder
+    line: "aur_builder ALL=(ALL) NOPASSWD: /usr/bin/pacman"
+    create: yes
+    validate: "visudo -cf %s"
+
+- name: Install yay
+  become: true
+  become_user: aur_builder
+  kewlfft.aur.aur:
+    name: yay
+    state: present
+    use: makepkg
+
+- name: Install AUR packages
+  become: true
+  become_user: aur_builder
+  kewlfft.aur.aur:
+    use: yay
+    name: "{{ item }}"
+    state: latest
+  with_items: "{{ aur_packages }}"

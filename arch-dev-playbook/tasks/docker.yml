@@ -1,0 +1,24 @@
+---
+- name: Install docker
+  become: true
+  community.general.pacman:
+    name: docker
+    state: latest
+
+- name: Install docker rootless
+  when: docker_rootless
+  block:
+    - name: Install docker rootless extras
+      kewlfft.aur.aur:
+        use: yay
+        name: docker-rootless-extras
+
+    - name: Set contents of subuser correct
+      become: true
+      ansible.builtin.copy:
+        dest: "{{ item }}"
+        content: |
+          {{ ansible_user }}:165536:65536
+      with_items:
+        - /etc/subuid
+        - /etc/subgid

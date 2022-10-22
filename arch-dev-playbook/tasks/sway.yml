@@ -1,0 +1,45 @@
+---
+- name: Install the required packages
+  become: true
+  community.general.pacman:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - "{{ sway_pac_packages }}"
+
+- name: Temp clone the rofi-themes-collection repo
+  ansible.builtin.git:
+    repo: https://github.com/lr-tech/rofi-themes-collection.git
+    dest: /tmp/rofi-themes-collection
+
+- name: Make sure the rofi themes folder exists
+  ansible.builtin.file:
+    path: ~/.local/share/rofi/themes/
+    state: directory
+
+- name: Copy rofi theme over to the themes folder
+  ansible.builtin.copy:
+    src: /tmp/rofi-themes-collection/themes/{{ rofi_theme }}
+    dest: ~/.local/share/rofi/themes/
+    remote_src: true
+
+- name: Install powermenu
+  kewlfft.aur.aur:
+    name: rofi-power-menu
+    state: latest
+    use: yay
+
+- name: Make electron work better with wayland
+  ansible.builtin.copy:
+    dest: ~/.config/electron-flags.conf
+    content: |
+      --enable-features=UseOzonePlatform
+      --ozone-platform=wayland
+  with_items:
+    - ~/.config/electron-flags.conf
+    - ~/.config/electron16-flags.conf
+
+- name: Install autotiling
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/nwg-piotr/autotiling/master/autotiling/main.py
+    dest: ~/.dotfiles/sway/scripts/tiling.py

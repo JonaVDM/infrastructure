@@ -1,0 +1,68 @@
+---
+- name: Setup Arch workstation
+  hosts: all
+
+  vars_files:
+    - main.config.yml
+    - packages.config.yml
+
+  tasks:
+    - name: Ensure pacman cache and system are up to date
+      become: true
+      community.general.pacman:
+        update_cache: true
+        upgrade: true
+
+    - name: update Dotfiles when sway is enabled
+      ansible.builtin.set_fact:
+        dotfiles_files: "{{ dotfiles_files + sway_dotfiles }}"
+      when: enable_sway
+
+    - ansible.builtin.import_tasks: "tasks/packages.yml"
+    - ansible.builtin.import_role:
+        name: jonavdm.dotfiles
+    - import_tasks: "tasks/tmux.yml"
+    - import_tasks: "tasks/nvim.yml"
+    - import_tasks: "tasks/shell.yml"
+
+    - name: Make sure the Pictures folder exists
+      ansible.builtin.file:
+        path: ~/Pictures
+        state: directory
+
+    - name: Copy the backgrounds over from the dotfiles
+      ansible.builtin.copy:
+        dest: "{{ item.dest }}"
+        src: "{{ item.src }}"
+      with_items: "{{ dotfiles_backgrounds }}"
+      when: enable_sway
+
+    - ansible.builtin.import_tasks: "tasks/zsh.yml"
+      when: shell == "zsh"
+
+    - ansible.builtin.import_tasks: "tasks/nvidia.yml"
+      when: nvidia_gpu
+
+    - ansible.builtin.import_tasks: "tasks/sway.yml"
+      when: enable_sway
+
+    - ansible.builtin.import_tasks: "tasks/display_manager.yml"
+      when: display_manager
+
+    - ansible.builtin.import_tasks: "tasks/docker.yml"
+
+    - name: Ensure wake on lan is on and enabled
+      become: true
+      ansible.builtin.service:
+        name: wol@{{ wol_interface }}
+        state: started
+        enabled: true
+      when: enable_wake_on_lan
+
+    # TODO: Get this working again
+    # - include_role:
+    #     name: jonavdm.versions
+    #   vars:
+    #     nvm_version: "{{ nvm_install_version }}"
+    #     gvm_version: "{{ gvm_install_version }}" # TODO: Fix this, somehow
+    #     py_version: "{{ pyenv_install_version }}"

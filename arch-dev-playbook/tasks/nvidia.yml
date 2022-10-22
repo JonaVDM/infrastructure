@@ -1,0 +1,4 @@
+---
+- name: Install the nvidia driver
+  community.general.pacman:
+    name: "{{ nvidia_driver }}"

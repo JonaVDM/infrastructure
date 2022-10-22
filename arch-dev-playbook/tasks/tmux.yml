@@ -1,0 +1,13 @@
+---
+- name: Ensure tmux is installed
+  become: true
+  community.general.pacman:
+    name: tmux
+    state: latest
+
+- name: Ensure TPM (tmux plguin manager) is installed
+  git:
+    repo: https://github.com/tmux-plugins/tpm
+    dest: ~/.tmux/plugins/tpm
+
+# TODO: Install plugins

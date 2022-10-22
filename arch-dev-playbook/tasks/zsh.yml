@@ -1,0 +1,26 @@
+---
+- name: Install oh my zsh
+  git:
+    repo: https://github.com/ohmyzsh/ohmyzsh.git
+    dest: "{{ ohmyzsh_path }}"
+
+- name: Download ZSH spaceship theme
+  git:
+    repo: https://github.com/spaceship-prompt/spaceship-prompt.git
+    dest: "{{ ohmyzsh_path }}/custom/themes/spaceship-prompt"
+
+- name: Install ZSH spaceship theme
+  file:
+    src: "{{ ohmyzsh_path }}/custom/themes/spaceship-prompt/spaceship.zsh-theme"
+    dest: "{{ ohmyzsh_path }}/custom/themes/spaceship.zsh-theme"
+    state: link
+
+- name: Download zsh-autosuggestions
+  git:
+    repo: https://github.com/zsh-users/zsh-autosuggestions
+    dest: "{{ ohmyzsh_path }}/custom/plugins/zsh-autosuggestions"
+
+- name: Download zsh-syntax-highlighting
+  git:
+    repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+    dest: "{{ ohmyzsh_path }}/custom/plugins/zsh-syntax-highlighting"

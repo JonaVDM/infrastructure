@@ -1,0 +1,60 @@
+---
+pacman_packages:
+  - base-devel
+  - curl
+  - fakeroot
+  - git
+  - neofetch
+  - net-tools
+  - openssh
+  - pyenv
+  - ttf-fira-code
+  - zsh
+  - github-cli
+  - fuse-overlayfs
+  - libreoffice-still
+  - unzip
+  - zip
+  - htop
+  - flake8
+  - autopep8
+  - eslint_d
+  - prettier
+  - neovim
+  - kitty
+  - ddcutil
+
+aur_packages:
+  - gvm
+  # - nerd-fonts-hack
+  - pyenv-virtualenv
+  - wol-systemd
+  - nvm
+  - tmuxinator
+  - wl-clipboard-history-git
+    # - ncspot
+
+nvidia_driver: mesa
+
+sway_pac_packages:
+  - sway
+  - swaylock
+  - swayidle
+  - waybar
+  - mako
+  - qtkeychain
+  - gnome-keyring
+  - pulseaudio
+  - playerctl
+  - python-gobject
+  - gtk3
+  - pavucontrol
+  - grim
+  - wl-clipboard
+  - slurp
+  - rofi
+  - xorg-xwayland
+  - libpulse
+  - thunar
+  - alacritty
+  - firefox

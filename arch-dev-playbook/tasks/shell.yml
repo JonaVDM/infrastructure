@@ -1,0 +1,6 @@
+---
+- name: Set the default shell
+  become: true
+  user:
+    name: "{{ ansible_user }}"
+    shell: "/usr/bin/{{ shell }}"

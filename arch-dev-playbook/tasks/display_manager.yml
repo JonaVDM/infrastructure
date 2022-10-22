@@ -1,0 +1,20 @@
+---
+- name: Install the required packages for the display manager
+  kewlfft.aur.aur:
+    use: yay
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - greetd
+    - greetd-tuigreet
+
+- name: Create config file for the display manager
+  become: true
+  copy:
+    dest: "/etc/greetd/config.toml"
+    content: |
+      [terminal]
+      vt = 1
+      [default_session]
+      command = "tuigreet --cmd sway"
+      user = "greeter"
