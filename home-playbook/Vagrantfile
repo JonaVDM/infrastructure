@@ -1,0 +1,28 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure('2') do |config|
+  config.vm.box = 'ubuntu/focal64'
+  config.ssh.insert_key = false
+  config.vm.synced_folder '.', '/vagrant', disabled: true
+
+  config.vm.provider :virtualbox do |v|
+    v.memory = 256
+    v.linked_clone = true
+  end
+
+  config.vm.define 'manager' do |machine|
+    machine.vm.hostname = 'manager'
+    machine.vm.network 'private_network', ip: '192.168.60.11'
+  end
+
+  config.vm.define 'runner' do |machine|
+    machine.vm.hostname = 'runner'
+    machine.vm.network 'private_network', ip: '192.168.60.12'
+  end
+
+  config.vm.define 'nas' do |machine|
+    machine.vm.hostname = 'nas'
+    machine.vm.network 'private_network', ip: '192.168.60.13'
+  end
+end
