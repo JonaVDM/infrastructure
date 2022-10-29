@@ -1,11 +1,11 @@
 [manager]
-192.168.60.11
-
-[nas]
-192.168.60.13
+manger-0 ansible_host=192.168.60.11
 
 [runners]
-192.168.60.12
+runner-0 ansible_host=192.168.60.12
+
+[nas]
+nas-0 ansible_host=192.168.60.13
 
 [all:vars]
 ansible_ssh_user=vagrant

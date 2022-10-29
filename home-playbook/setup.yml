@@ -1,0 +1,47 @@
+---
+- name: Install Docker
+  hosts: all
+  become: true
+  tasks:
+    - name: Set the address of the main manager node
+      ansible.builtin.set_fact:
+        swarm_ip: '{{ hostvars[groups["manager"][0]].ansible_host }}'
+
+    - name: Ensure all packages and cache is up to date
+      ansible.builtin.apt:
+        upgrade: safe
+        update_cache: true
+        cache_valid_time: 900 # 15 minutes
+
+    - name: Install docker on Pis
+      ansible.builtin.include_tasks: tasks/docker.yml
+      when: inventory_hostname in groups['manager'] or inventory_hostname in groups['runners']
+
+    - name: Install pip
+      ansible.builtin.apt:
+        name: python3-pip
+      when: inventory_hostname in groups['manager'] or inventory_hostname in groups['runners']
+
+    - name: Install Docker SDK for Python
+      ansible.builtin.pip:
+        name: docker
+        state: latest
+
+    - name: Init the swarm
+      community.docker.docker_swarm:
+        state: present
+        advertise_addr: '{{ swarm_ip }}'
+      register: docker_swarm_init_result
+      when: inventory_hostname in groups['manager']
+
+    - name: Register the join token
+      ansible.builtin.set_fact:
+        worker_join_token: '{{ hostvars[groups["manager"][0]].docker_swarm_init_result.swarm_facts.JoinTokens.Worker }}'
+
+    - name: Join the swarm
+      community.docker.docker_swarm:
+        join_token: '{{ worker_join_token }}'
+        state: join
+        advertise_addr: '{{ ansible_host }}'
+        remote_addrs: '{{ swarm_ip }}'
+      when: inventory_hostname in groups['runners'] or inventory_hostname in groups['nas']
