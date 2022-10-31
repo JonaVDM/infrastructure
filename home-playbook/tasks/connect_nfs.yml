@@ -1,0 +1,25 @@
+---
+- name: Install NFS common
+  ansible.builtin.apt:
+    name: nfs-common
+    state: latest
+
+- name: Create the mounting folders
+  ansible.builtin.file:
+    dest: '/mnt/{{ item }}'
+    state: directory
+    mode: '1666'
+  with_items:
+    - media
+    - docker
+
+- name: Mount the nfs shares
+  ansible.posix.mount:
+    path: '/mnt/{{ item }}'
+    state: mounted
+    fstype: nfs
+    src: '{{ nas_ip }}:{{ nfs_base }}/{{ item }}'
+    opts: rw,async,hard,intr,user
+  with_items:
+    - media
+    - docker

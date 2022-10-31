@@ -1,0 +1,53 @@
+---
+# This playbook is for the use of building one of the vm's. This is not meant to
+# run on a production machine.
+# Yes I need a playbook to test other playbooks
+
+- name: Setup the nas VM.
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Setup Docker
+      ansible.builtin.include_tasks: tasks/docker.yml
+
+    - name: Install pip and nfs
+      ansible.builtin.apt:
+        name: '{{ item }}'
+        state: present
+      with_items:
+        - python3-pip
+        - nfs-kernel-server
+
+    - name: Make sure nfs folders exists
+      ansible.builtin.file:
+        path: '/srv/{{ item }}'
+        state: directory
+        mode: '777'
+      with_items:
+        - media
+        - docker
+
+    - name: Add a config for nfs
+      ansible.builtin.copy:
+        dest: /etc/exports
+        content: |
+          /srv/media  *(rw,async,no_wdelay,all_squash,insecure_locks,anonuid=1000,anongid=1000)
+          /srv/docker *(rw,async,no_wdelay,all_squash,insecure_locks,anonuid=1000,anongid=1000)
+        mode: '700'
+
+    - name: Start the nfs server
+      ansible.builtin.service:
+        name: nfs-kernel-server.service
+        state: started
+        enabled: true
+
+    - name: Check if folders are already being shared
+      register: nfs_check_output
+      ansible.builtin.command: exportfs -s
+      changed_when: false
+      failed_when: false
+
+    - name: Reload NFS Settings
+      ansible.builtin.command: exportfs -a
+      when: nfs_check_output is not search 'media' or nfs_check_output is not search 'docker'

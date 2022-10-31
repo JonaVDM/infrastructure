@@ -25,13 +25,8 @@ Vagrant.configure('2') do |config|
     machine.vm.hostname = 'nas'
     machine.vm.network 'private_network', ip: '192.168.60.13'
 
-    # This provision script is meant to be run once
-    machine.vm.provision 'shell', inline: <<-BLOCK
-      sudo apt-get update && apt-get upgrade
-      curl -fsSL https://get.docker.com -o get-docker.sh
-      sudo sh get-docker.sh
-
-      sudo apt-get install -y  python3-pip
-    BLOCK
+    machine.vm.provision 'ansible' do |ansible|
+      ansible.playbook = 'nas.yml'
+    end
   end
 end

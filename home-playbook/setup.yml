@@ -1,17 +1,25 @@
 ---
-- name: Install Docker
+- name: Setup and join Docker Swarm
   hosts: all
   become: true
+  vars_files:
+    - configs/setup.config.yml
+
   tasks:
-    - name: Set the address of the main manager node
+    - name: Set the address of the different nodes
       ansible.builtin.set_fact:
         swarm_ip: '{{ hostvars[groups["manager"][0]].ansible_host }}'
+        nas_ip: '{{ hostvars[groups["nas"][0]].ansible_host }}'
 
     - name: Ensure all packages and cache is up to date
       ansible.builtin.apt:
         upgrade: safe
         update_cache: true
         cache_valid_time: 900 # 15 minutes
+
+    - name: Install and join the nfs shares
+      ansible.builtin.include_tasks: tasks/connect_nfs.yml
+      when: inventory_hostname in groups['manager'] or inventory_hostname in groups['runners']
 
     - name: Install docker on Pis
       ansible.builtin.include_tasks: tasks/docker.yml
