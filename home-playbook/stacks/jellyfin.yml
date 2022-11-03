@@ -1,0 +1,22 @@
+---
+version: '3.8'
+
+services:
+  jellyfin:
+    image: jellyfin/jellyfin:{{ jellyfin_version }}
+    volumes:
+      - /mnt/docker/jellyfin-config:/config
+      - /mnt/docker/jellyfin-cache:/cache
+      - /mnt/media/TV:/data/tv
+      - /mnt/media/Anime:/data/anime
+      - /mnt/media/Movies:/data/movies
+    networks:
+      - traefik-net
+    labels:
+      - traefik.http.routers.jellyfin.rule=Host(`{{ jellyfin_domain }}`)
+      - traefik.http.services.jellyfin.loadbalancer.server.port=8096
+
+networks:
+  traefik-net:
+    driver: overlay
+    external: true

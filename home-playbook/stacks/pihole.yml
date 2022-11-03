@@ -1,0 +1,26 @@
+---
+version: '3.8'
+
+services:
+  pihole:
+    image: pihole/pihole:{{ pihole_version}}
+    volumes:
+      - /mnt/docker/pihole-config:/etc/pihole
+      - /mnt/docker/pihole-dnsmasq:/etc/dnsmasq.d
+    environment:
+      - TZ=Europe/Amsterdam
+      - WEBTHEME=default-darker
+      - WEBPASSWORD={{ pihole_password }}
+    ports:
+      - '53:53/tcp'
+      - '53:53/udp'
+    networks:
+      - traefik-net
+    labels:
+      - traefik.http.routers.pihole.rule=Host(`{{ pihole_domain }}`)
+      - traefik.http.services.pihole.loadbalancer.server.port=80
+
+networks:
+  traefik-net:
+    driver: overlay
+    external: true

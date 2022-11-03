@@ -1,0 +1,42 @@
+---
+version: '3'
+services:
+  database:
+    image: postgres:{{ postgres_version }}
+    environment:
+      - POSTGRES_USER=hedgedoc
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=hedgedoc
+    volumes:
+      - /mnt/docker/hedgedoc-database:/var/lib/postgresql/data
+    restart: always
+
+  app:
+    image: linuxserver/hedgedoc:{{ hedgedoc_version }}
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - DB_HOST=database
+      - DB_PORT=3306
+      - DB_USER=hedgedoc
+      - DB_PASS=password
+      - DB_NAME=hedgedoc
+      - TZ=Europe/Amsterdam
+      - CMD_DB_URL=postgres://hedgedoc:password@database:5432/hedgedoc
+      - CMD_DOMAIN={{ hedgedoc_domain }}
+      - CMD_URL_ADDPORT=true
+    volumes:
+      - /mnt/docker/hedgedoc-uploads:/config
+    restart: always
+    networks:
+      - traefik-net
+    depends_on:
+      - database
+    labels:
+      - traefik.http.routers.hedgedoc.rule=Host(`{{ hedgedoc_domain }}`)
+      - traefik.http.services.hedgedoc.loadbalancer.server.port=3000
+
+networks:
+  traefik-net:
+    driver: overlay
+    external: true

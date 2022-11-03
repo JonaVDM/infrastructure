@@ -1,0 +1,69 @@
+---
+- name: Create containers within the swarm
+  hosts: manager
+  become: true
+  vars_files:
+    - configs/containers.config.yml
+    - configs/secrets.config.yml
+  tasks:
+    - name: Get the contents of the stacks folder
+      become: false
+      delegate_to: 127.0.0.1
+      register: local_stacks
+      ansible.builtin.find:
+        path:
+          - stacks/
+
+    - name: Craete stacks folder
+      ansible.builtin.file:
+        dest: /stacks
+        state: directory
+        mode: '645'
+
+    - name: Copy over the stakcs
+      ansible.builtin.template:
+        src: '{{ item.path }}'
+        dest: '/stacks/{{ item.path | basename }}'
+        mode: '640'
+      with_items: '{{ local_stacks.files }}'
+
+      # Dunno if this is a bug, but right now docker swarm just doesn't make
+      # these folders.
+    - name: Create the folders for docker swarm.
+      ansible.builtin.file:
+        dest: '/mnt/{{ item }}'
+        state: directory
+        mode: '770'
+      with_items:
+        - docker/portainer
+        - docker/pihole-config
+        - docker/pihole-dnsmasq
+        - docker/jellyfin-config
+        - docker/jellyfin-cache
+        - docker/homer
+        - docker/hedgedoc-database
+        - docker/hedgedoc-uploads
+        - docker/gitea-database
+        - docker/gitea-data
+        - media/TV
+        - media/Anime
+        - media/Movies
+
+    - name: Create the traefik network
+      community.docker.docker_network:
+        name: traefik-net
+        driver: overlay
+
+    - name: Start the traefik stack
+      community.docker.docker_stack:
+        name: 'traefik'
+        compose:
+          - /stacks/traefik.yml
+
+    - name: Run the stacks
+      community.docker.docker_stack:
+        name: '{{ item.path | basename | replace(".yml", "") }}'
+        compose:
+          - /stacks/{{ item.path | basename }}
+        state: present
+      with_items: '{{ local_stacks.files }}'

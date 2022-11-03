@@ -1,0 +1,33 @@
+---
+version: '3.8'
+
+services:
+  db:
+    image: postgres:{{ postgres_version }}
+    restart: always
+    environment:
+      - POSTGRES_USER=gitea
+      - POSTGRES_PASSWORD=gitea
+      - POSTGRES_DB=gitea
+    volumes:
+      - /mnt/docker/gitea-database:/var/lib/postgresql/data
+
+  gitea:
+    image: gitea/gitea:1.17.3
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+    volumes:
+      - /mnt/docker/gitea-data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - traefik-net
+    labels:
+      - traefik.http.routers.gitea.rule=Host(`{{ gitea_domain }}`)
+      - traefik.http.services.gitea.loadbalancer.server.port=3000
+
+networks:
+  traefik-net:
+    driver: overlay
+    external: true

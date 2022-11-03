@@ -1,0 +1,17 @@
+---
+traefik_version: '2.9.4'
+pihole_version: '2022.10'
+portainer_agent_version: 2.15.1-alpine
+portainer_version: 2.15.1-alpine
+homer_version: v22.10.1
+gluetun_version: v3.31.1
+jellyfin_version: '10.8.6'
+postgres_version: '15.0-alpine'
+hedgedoc_version: '1.9.5'
+
+pihole_domain: dns.home.lab
+portainer_domain: port.home.lab
+homer_domain: home.lab
+jellyfin_domain: jelly.home.lab
+hedgedoc_domain: docs.home.lab
+gitea_domain: git.home.lab

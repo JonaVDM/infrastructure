@@ -30,10 +30,13 @@
         name: python3-pip
       when: inventory_hostname in groups['manager'] or inventory_hostname in groups['runners']
 
-    - name: Install Docker SDK for Python
+    - name: Install Docker SDK and jsondiff via pip
       ansible.builtin.pip:
-        name: docker
+        name: '{{ item }}'
         state: latest
+      with_items:
+        - docker
+        - jsondiff
 
     - name: Init the swarm
       community.docker.docker_swarm:
@@ -52,4 +55,4 @@
         state: join
         advertise_addr: '{{ ansible_host }}'
         remote_addrs: '{{ swarm_ip }}'
-      when: inventory_hostname in groups['runners'] or inventory_hostname in groups['nas']
+      when: inventory_hostname in groups['runners']

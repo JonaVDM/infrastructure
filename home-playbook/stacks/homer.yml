@@ -1,0 +1,17 @@
+---
+version: '3.8'
+
+services:
+  homer:
+    image: b4bz/homer:{{ homer_version }}
+    volumes:
+      - /mnt/docker/homer:/www/assets
+    networks:
+      - traefik-net
+    labels:
+      - traefik.http.routers.homer.rule=Host(`{{ homer_domain }}`)
+
+networks:
+  traefik-net:
+    driver: overlay
+    external: true

@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  traefik:
+    image: traefik:{{ traefik_version }}
+    command:
+      [
+        --providers.docker,
+        --providers.docker.swarmMode,
+        --providers.docker.watch,
+        --api,
+      ]
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - traefik-net
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+networks:
+  traefik-net:
+    driver: overlay
+    external: true
