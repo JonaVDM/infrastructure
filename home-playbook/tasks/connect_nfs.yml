@@ -15,11 +15,13 @@
 
 - name: Mount the nfs shares
   ansible.posix.mount:
-    path: '/mnt/{{ item }}'
+    path: '/mnt/{{ item.name }}'
     state: mounted
     fstype: nfs
-    src: '{{ nas_ip }}:{{ nfs_base }}/{{ item }}'
+    src: '{{ nas_ip }}:{{ item.base }}'
     opts: rw,async,hard,intr,user
   with_items:
-    - media
-    - docker
+    - name: media
+      base: nfs_media_base
+    - name: docker
+      base: nfs_docker_base
