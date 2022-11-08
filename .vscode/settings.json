@@ -1,6 +1,8 @@
 {
   "files.associations": {
     "*.yml": "ansible",
-    "*config.yml": "yaml"
+    "*config.yml": "yaml",
+    "*example.yml": "yaml",
+    "**/stacks/*.yml": "dockercompose"
   }
 }
