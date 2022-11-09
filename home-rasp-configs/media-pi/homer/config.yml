@@ -1,0 +1,96 @@
+---
+title: 'Home Services'
+subtitle: ':D'
+icon: 'fa-solid fa-house'
+
+header: true
+footer: false
+
+columns: '3'
+services:
+  - name: 'Arr, the seven seas'
+    icon: 'fa-solid fa-skull-crossbones'
+    items:
+      - name: 'Prowlarr'
+        logo: 'assets/prowlarr.png'
+        url: 'http://10.0.0.9:3003'
+        target: '_blank'
+        type: 'Prowlarr'
+        apikey: '7eada984f1eb4d44a99b3d1512152112'
+
+      - name: 'Sonarr'
+        logo: 'assets/sonarr.png'
+        url: 'http://10.0.0.9:3001'
+        target: '_blank'
+        type: 'Sonarr'
+        apikey: 'fadccbc15ebb453893fc322124e325f5'
+
+      - name: 'Radarr'
+        logo: 'assets/radarr.png'
+        url: 'http://10.0.0.9:3002'
+        target: '_blank'
+        type: 'Radarr'
+        apikey: '890f7658c93f4add93cd06293fea028b'
+
+      - name: 'qBittorent'
+        logo: 'assets/qbittorent.png'
+        url: 'http://10.0.0.9:3000'
+        target: '_blank'
+
+  - name: 'Services'
+    icon: 'fas fa-heartbeat'
+    items:
+      - name: 'Jellyfin'
+        logo: 'assets/jellyfin.png'
+        url: 'http://10.0.0.9:8096'
+        target: '_blank'
+
+      - name: 'Docs'
+        logo: 'assets/hedgedoc.png'
+        url: 'http://docs.melons.club'
+        target: '_blank'
+
+      - name: 'Git Backups'
+        logo: 'assets/gitea.png'
+        url: 'http://git.lego'
+        target: '_blank'
+
+      - name: 'NAS Interface'
+        icon: 'fa-solid fa-database'
+        url: 'http://192.168.1.9'
+        target: '_blank'
+
+  - name: 'Hosting'
+    icon: 'fa-solid fa-server'
+    items:
+      - name: 'Pi-Hole'
+        logo: 'assets/pi-hole.png'
+        url: 'http://dns.lego/admin'
+        target: '_blank'
+        type: 'PiHole'
+
+      - name: 'Portainer'
+        logo: 'assets/portainer.png'
+        url: 'http://port.lego'
+        target: '_blank'
+        type: 'Portainer'
+        apikey: 'ptr_Fch9M79JdKP+5XVafVkjFIctvnvkmGG+0LNBWNcz4IQ='
+        environments:
+          - 'local'
+          - 'NAS'
+          - 'media'
+
+      - name: 'Traefik (Networking)'
+        logo: 'assets/traefik.png'
+        url: 'http://10.0.0.2:8080'
+        target: '_blank'
+
+      - name: 'Traefik (media)'
+        logo: 'assets/traefik.png'
+        url: 'http://10.0.0.3:8080'
+        target: '_blank'
+
+      - name: 'Traefik (NAS)'
+        logo: 'assets/traefik.png'
+        url: 'http://10.0.0.3:8080'
+        target: '_blank'

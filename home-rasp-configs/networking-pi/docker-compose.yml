@@ -1,0 +1,56 @@
+---
+version: '3.8'
+
+services:
+  pihole:
+    image: pihole/pihole
+    volumes:
+      - pihole:/etc/pihole
+      - pihole_dns:/etc/dnsmasq.d
+      - ./resolv.conf:/etc/resolv.conf
+    environment:
+      - TZ=Europe/Amsterdam
+      - WEBPASSWORD=secret
+    ports:
+      - 53:53/tcp
+      - 53:53/udp
+      - 8081:80 # For first time setup
+    labels:
+      - traefik.http.routers.pihole.rule=Host(`dns.lego`)
+      - traefik.http.services.pihole.loadbalancer.server.port=80
+    restart: always
+
+  portainer:
+    image: portainer/portainer-ce
+    volumes:
+      - portainer:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - traefik.http.routers.portainer.rule=Host(`port.lego`)
+      - traefik.http.services.portainer.loadbalancer.server.port=9000
+    restart: always
+
+  traefik:
+    image: traefik
+    command:
+      - --providers.docker
+      - --api.insecure
+    ports:
+      - 80:80
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: always
+
+  gickup:
+    image: buddyspencer/gickup:latest
+    volumes:
+      - ./gickup.yml:/gickup/conf.yml
+      - ./gitea-token.txt:/gitea-token.txt
+      - ./github-token.txt:/github-token.txt
+    command: ['/gickup/conf.yml']
+
+volumes:
+  pihole:
+  pihole_dns:
+  portainer:

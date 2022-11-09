@@ -1,0 +1,13 @@
+---
+source:
+  github:
+    - token_file: /github-token.txt
+      ssh: false
+      starred: false
+
+destination:
+  gitea:
+    - token_file: /gitea-token.txt
+      user: backup
+      url: http://git.lego
+# cron: 0 3 * * 1
