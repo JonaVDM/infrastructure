@@ -33,13 +33,14 @@
 
 - name: Make electron work better with wayland
   ansible.builtin.copy:
-    dest: ~/.config/electron-flags.conf
+    dest: '{{ item }}'
     content: |
       --enable-features=UseOzonePlatform
       --ozone-platform=wayland
   with_items:
     - ~/.config/electron-flags.conf
     - ~/.config/electron16-flags.conf
+    - ~/.config/code-flags.conf
 
 - name: Clone the sway config repo
   ansible.builtin.git:
