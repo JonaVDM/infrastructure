@@ -10,4 +10,5 @@ destination:
     - token_file: /gitea-token.txt
       user: backup
       url: http://git.lego
-# cron: 0 3 * * 1
+
+cron: 0 3 * * 1
