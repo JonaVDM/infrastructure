@@ -17,7 +17,7 @@
     - ansible.builtin.import_role:
         name: ../dotfiles-role
     - import_tasks: 'tasks/tmux.yml'
-    - import_role: 
+    - import_role:
         name: ../neovim-role
     - import_tasks: 'tasks/shell.yml'
 
@@ -57,11 +57,3 @@
         enabled: true
       when: enable_wake_on_lan
     # TODO: Enable services
-
-    # TODO: Get this working again
-    # - include_role:
-    #     name: jonavdm.versions
-    #   vars:
-    #     nvm_version: "{{ nvm_install_version }}"
-    #     gvm_version: "{{ gvm_install_version }}" # TODO: Fix this, somehow
-    #     py_version: "{{ pyenv_install_version }}"

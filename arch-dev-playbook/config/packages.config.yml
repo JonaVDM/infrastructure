@@ -1,33 +1,34 @@
 ---
 pacman_packages:
+  # Other, but than first
   - base-devel
-  - curl
   - fakeroot
-  - git
-  - neofetch
-  - net-tools
-  - openssh
-  - pyenv
-  - ttf-fira-code
-  - zsh
-  - github-cli
   - fuse-overlayfs
+  - openssh
+  - ddcutil
+
+  # Cli tools/apps
+  - git
+  - curl
+  - zsh
+  - net-tools
+  - neofetch
+  - github-cli
   - unzip
   - zip
   - htop
-  - flake8
-  - autopep8
-  - eslint_d
-  - prettier
   - neovim
-  - ddcutil
+  - fzf
+
+  # Languages
+  - go
+  - python
+  - npm
+  - nodejs
+  - rustup
 
 aur_packages:
-  - gvm
-  - pyenv-virtualenv
   - wol-systemd
-  - nvm
-  - tmuxinator
 
 nvidia_driver: mesa
 
@@ -57,6 +58,7 @@ sway_pac_packages:
 
 sway_aur_packages:
   # - nerd-fonts-hack
-  # - ncspot
+  - ncspot-bin
   - wl-clipboard-history-git
   - rofi-power-menu
+  - visual-studio-code-bin

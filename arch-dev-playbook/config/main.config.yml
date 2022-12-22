@@ -8,11 +8,6 @@ enable_sway: true
 
 shell: zsh
 
-nvm_version: 'v0.39.1'
-gvm_install_version: go1.18.2
-nvm_install_version: '18.2.0'
-pyenv_install_version: '3.10.4'
-
 sway_config_files:
   - sway
   - waybar
