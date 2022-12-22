@@ -1,6 +1,6 @@
 ---
 pacman_packages:
-  # Other, but than first
+  # Other, but at the start
   - base-devel
   - fakeroot
   - fuse-overlayfs

@@ -10,4 +10,7 @@
     repo: https://github.com/tmux-plugins/tpm
     dest: ~/.tmux/plugins/tpm
 
-# TODO: Install plugins
+- name: Install tmux plugins
+  ansible.builtin.command:
+    cmd: ~/.tmux/plugins/tpm/bin/install_plugins
+    creates: ~/.tmux/plugins/nord-tmux
