@@ -29,6 +29,7 @@ pacman_packages:
 
 aur_packages:
   - wol-systemd
+  - pnpm
 
 nvidia_driver: mesa
 
