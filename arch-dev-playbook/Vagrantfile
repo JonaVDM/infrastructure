@@ -13,7 +13,7 @@ Vagrant.configure('2') do |config|
   config.ssh.password = 'vagrant'
 
   config.vm.provision "shell" do |cmd|
-    cmd.inline = "sudo pacman -S --noconfirm python"
+    cmd.inline = "sudo pacman -Syy && sudo pacman -S --noconfirm python glibc"
   end
 
   config.vm.provision 'ans', type: 'ansible' do |ansible|

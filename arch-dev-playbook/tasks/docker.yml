@@ -2,8 +2,11 @@
 - name: Install docker
   become: true
   community.general.pacman:
-    name: docker
+    name: "{{ item }}"
     state: latest
+  with_items:
+    - docker
+    - docker-compose
 
 - name: Install docker rootless
   when: docker_rootless
