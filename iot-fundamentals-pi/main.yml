@@ -1,0 +1,47 @@
+---
+- name: Setup IOT PI
+  hosts: all
+
+  vars_files:
+    - config.yml
+
+  become: true
+
+  tasks:
+    - name: Ensure all packages are updated
+      ansible.builtin.apt:
+        update_cache: true
+        upgrade: true
+
+    - name: Install the needed packages
+      ansible.builtin.apt:
+        name:
+          - mosquitto
+          - mosquitto-clients
+
+    - name: Enable mqtt server
+      ansible.builtin.service:
+        name: mosquitto.service
+        state: started
+        enabled: true
+
+    - name: Create password file
+      ansible.builtin.file:
+        path: /etc/mosquitto/passwd
+        mode: 0644
+
+    - name: Test if user has already been added
+      ansible.builtin.command: grep '{{ username }}:' /etc/mosquitto/passwd
+      register: checkuser
+      changed_when: checkuser is failed
+      failed_when: false
+
+    - name: Add user to mosquitto
+      ansible.builtin.command:
+        argv:
+          - mosquitto_passwd
+          - -b
+          - /etc/mosquitto/passwd
+          - '{{ username }}'
+          - '{{ password }}'
+      when: checkuser.rc == 1
