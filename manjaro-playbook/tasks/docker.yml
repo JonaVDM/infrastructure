@@ -8,6 +8,13 @@
     - docker
     - docker-compose
 
+- name: Start and enable docker
+  become: true
+  ansible.builtin.systemd:
+    enabled: true
+    name: docker
+    state: started
+
 - name: Install docker rootless
   when: docker_rootless
   block:
@@ -25,3 +32,10 @@
       with_items:
         - /etc/subuid
         - /etc/subgid
+
+    - name: Start and enable docker for user
+      ansible.builtin.systemd:
+        enabled: true
+        name: docker
+        state: started
+        scope: user
