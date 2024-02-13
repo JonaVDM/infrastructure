@@ -1,0 +1,4 @@
+---
+enable_wake_on_lan: true
+wol_interface: enp5s0
+docker_rootless: true

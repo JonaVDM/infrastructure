@@ -1,0 +1,36 @@
+---
+pacman_packages:
+  # Other, but at the start
+  - base-devel
+  - fakeroot
+  - fuse-overlayfs
+  - openssh
+  - ddcutil
+  - ttf-hack-nerd
+  - ncspot
+
+  # Cli tools/apps
+  - git
+  - curl
+  - zsh
+  - net-tools
+  - neofetch
+  - github-cli
+  - unzip
+  - zip
+  - htop
+  - neovim
+  - fzf
+  - bat
+
+  # Languages
+  - go
+  - python
+  - npm
+  - nodejs
+  - rustup
+  - ruby
+
+aur_packages:
+  - wol-systemd
+  - pnpm

@@ -1,0 +1,31 @@
+---
+- name: Setup Arch workstation
+  hosts: all
+
+  vars_files:
+    - config/main.config.yml
+    - config/packages.config.yml
+
+  tasks:
+    - name: Ensure pacman cache and system are up to date
+      become: true
+      community.general.pacman:
+        update_cache: true
+        upgrade: true
+
+    - ansible.builtin.import_tasks: 'tasks/packages.yml'
+    - ansible.builtin.import_role:
+        name: ../dotfiles-role
+    - import_tasks: 'tasks/tmux.yml'
+    - import_role:
+        name: ../neovim-role
+
+    - ansible.builtin.import_tasks: 'tasks/docker.yml'
+
+    - name: Ensure wake on lan is on and enabled
+      become: true
+      ansible.builtin.service:
+        name: wol@{{ wol_interface }}
+        state: started
+        enabled: true
+      when: enable_wake_on_lan
