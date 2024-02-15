@@ -22,6 +22,8 @@ pacman_packages:
   - neovim
   - fzf
   - bat
+  - jq
+  - btop
 
   # Languages
   - go
