@@ -42,3 +42,31 @@ git clone https://github.com/JonaVDM/infrastructure.git ~/Code/infrastructure
 ansible-galaxy install -r requirements.yml
 ansible-playbook -i inventory main.yml -u jona --ask-become-pass
 ```
+
+## Extensions
+
+Did not have time yet to really put in extensions with a method i like. So for 
+now here is a list of extensions and settings on my install:
+
+- https://extensions.gnome.org/extension/3193/blur-my-shell/
+- https://extensions.gnome.org/extension/4442/gsnap/
+- https://extensions.gnome.org/extension/1460/vitals/
+- enable launch new instance
+
+keybindings:
+
+- (gnome tweaks) remap caps -> escape
+- Super + E -> Open files (cmd: nautilus)
+- Super + Return (enter) -> Open terminal
+- Super + F -> Toggle fullscreen mode
+
+Settings:
+- Mouse acceleration: off
+- Accessibility -> typing -> repeat keys, slighty faseter.
+- Search:
+    - files
+    - calculator
+    - settings
+- multitasking
+    - enable workspaces on all displays
+    - app switching: current only
